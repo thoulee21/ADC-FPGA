@@ -1,0 +1,24 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module DAC(D7, D6, D5, D4, D3, D2, D1, D0, out);
+    parameter bits = 8, vdd = 3, td = 0, tr = 0.2n, vref = 1;
+    input D7, D6, D5, D4, D3, D2, D1, D0;
+    output out;
+    voltage D7, D6, D5, D4, D3, D2, D1, D0, out;
+    real code, out_temp;
+    
+    analog begin
+        code = 0;
+        code = code + ((V(D0) > vdd/2) ? pow(2, 0) : 0);
+        code = code + ((V(D1) > vdd/2) ? pow(2, 1) : 0);
+        code = code + ((V(D2) > vdd/2) ? pow(2, 2) : 0);
+        code = code + ((V(D3) > vdd/2) ? pow(2, 3) : 0);
+        code = code + ((V(D4) > vdd/2) ? pow(2, 4) : 0);
+        code = code + ((V(D5) > vdd/2) ? pow(2, 5) : 0);
+        code = code + ((V(D6) > vdd/2) ? pow(2, 6) : 0);
+        code = code + ((V(D7) > vdd/2) ? pow(2, 7) : 0);
+        out_temp = code / 256 * vref;
+        V(out) <+ transition(out_temp, td, tr);
+    end
+endmodule
