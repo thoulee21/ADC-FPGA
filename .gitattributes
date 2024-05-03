@@ -1,0 +1,4 @@
+*.bat  -text
+*.drawio -text
+*.pdf -text
+*.svg -text
