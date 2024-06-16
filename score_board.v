@@ -1,11 +1,10 @@
-// 将pad级联成新的模块numberpad。其中num1,num2,num3分别输出个十百位的8421BCD码 
-module numberpad(al, a2, d1, d2, num1, num2, num3); 
+module numberpad(a1, a2, d1, d2, num1, num2, num3); 
     output [3:0] num1, num2, num3;
-    input al, a2, d1, d2; // a1为加1端口，a2为加2端口，d1为减1端口，d2为减2端口 
+    input a1, a2, d1, d2; // a1为加1端口，a2为加2端口，d1为减1端口，d2为减2端口 
     wire co1, co2, co3, ci1, ci2, ci3;
-    pad(a1, a2, d1, d2, num1, co1, ci1); // 将三个pad级联 
-    pad(co1, 0, ci1, 0, num2, co2, ci2); 
-    pad(co2, 0, ci2, 0, num3, co3, ci3); 
+    pad pad1(a1, a2, d1, d2, num1, co1, ci1); // 将三个pad级联 
+    pad pad2(co1, 0, ci1, 0, num2, co2, ci2); 
+    pad pad3(co2, 0, ci2, 0, num3, co3, ci3); 
 endmodule
 
 // pad模块，输出为4位8421BCD码，由al, a2, d1, d2来实现加减操作。有进位和借位端口 
@@ -16,7 +15,7 @@ module pad(a1, a2, d1, d2, num, co, ci);
     wire rem;
     
     initial num <= 4'b0000;
-    assign rem = al | a2 | d1 | d2;
+    assign rem = a1 | a2 | d1 | d2;
     
     always @(posedge rem) begin
         if (a1 && !a2 && !d1 && !d2) begin // 仅al输入脉冲时加1，必要时进位 
@@ -38,7 +37,7 @@ module pad(a1, a2, d1, d2, num, co, ci);
                 num <= num + 4'b0010;
                 co <= 1'b0;
             end
-        end else if (d1 && !al && !a2 && !d2) begin // 仅d1输入脉冲时减1，必要时借位 
+        end else if (d1 && !a1 && !a2 && !d2) begin // 仅d1输入脉冲时减1，必要时借位 
             if (num == 4'b0000) begin
                 num <= 4'b1001;
                 ci <= 1'b1;
