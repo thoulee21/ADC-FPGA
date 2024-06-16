@@ -7,7 +7,7 @@ module numberpad(a1, a2, d1, d2, num1, num2, num3);
     pad pad3(co2, 0, ci2, 0, num3, co3, ci3); 
 endmodule
 
-// pad模块，输出为4位8421BCD码，由al, a2, d1, d2来实现加减操作。有进位和借位端口 
+// pad模块，输出为4位8421BCD码，由a1, a2, d1, d2来实现加减操作。有进位和借位端口 
 module pad(a1, a2, d1, d2, num, co, ci);
     output reg [3:0] num; // 输出4位8421BCD码 
     output reg co, ci; // co 进位信号, ci是借位信号
@@ -18,7 +18,7 @@ module pad(a1, a2, d1, d2, num, co, ci);
     assign rem = a1 | a2 | d1 | d2;
     
     always @(posedge rem) begin
-        if (a1 && !a2 && !d1 && !d2) begin // 仅al输入脉冲时加1，必要时进位 
+        if (a1 && !a2 && !d1 && !d2) begin // 仅a1输入脉冲时加1，必要时进位 
             if (num == 4'b1001) begin
                 num <= 4'b0000;
                 co <= 1'b1;
