@@ -59,6 +59,14 @@ module test_alu_tb;
     opcode = 2'b11;
     #10;
 
+    // Randomized tests
+    repeat (10) begin
+      A = $random % 16;
+      B = $random % 16;
+      opcode = $random % 4;
+      #10;
+    end
+
     // End simulation
     $finish;
   end
