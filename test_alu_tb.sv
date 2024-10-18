@@ -72,7 +72,7 @@ module test_alu_tb;
   end
 
   initial begin
-    $dumpfile("test_alu_tb.vad");
+    $dumpfile("test_alu_tb.vcd");
     $dumpvars(0, test_alu_tb);
   end
 

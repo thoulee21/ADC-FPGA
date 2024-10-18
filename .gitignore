@@ -25,4 +25,4 @@ bin-release/
 # information for Eclipse / Flash Builder.
 
 *.vvp
-*.vad
+*.vcd
